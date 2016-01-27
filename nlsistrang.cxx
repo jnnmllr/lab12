@@ -120,6 +120,6 @@ void nonlinstep(cmplx* const psi1, cmplx* const psi0,
 {
   cmplx i = cmplx(0.0,1.0);
   for(int j=0; j<N; j++){
-    psi0[j] = psi1[j]*exp(i*psi1[j]*conj(psi1[j])*dt);
+    psi0[j] = psi1[j]*exp(-i*psi1[j]*conj(psi1[j])*dt);
   }
 }
