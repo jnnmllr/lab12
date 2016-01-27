@@ -27,7 +27,7 @@ int main(){
 	const int Nx = 4000;
 	const double L = 800;
 	const double xmin = 0;
-	const double Tend = 50;
+	const double Tend = 150;
 	const double dx = L / (Nx - 1);
 	const double dt = dx  / 10;
 	const int Na = 10;
@@ -39,21 +39,27 @@ int main(){
 
 	cmplx* psi0 = new cmplx[Nx];
 	cmplx* psi1 = new cmplx[Nx];
+	cmplx* h;
 
 	init(psi0, eta, dx, dt,Nx);
 	
 
 
-	writeToFile(psi0,"psi_0", dx,Nx,xmin);
+	writeToFile(psi0,"psistrang_0", dx,Nx,xmin);
 
 
 	for (int i = 1; i <= Na; i++) {
 
-		for (int j = 1; j <= Nk-1; j++) {	linstep(psi1, psi0, dt, dx, Nx);
-	nonlinstep(psi1, psi0, dt, Nx);
+		for (int j = 1; j <= Nk-1; j++) {	
+		  linstep(psi1, psi0, (dt/2.0), dx, Nx);
+		  nonlinstep(psi1, psi0, dt, Nx);
+		  linstep(psi1, psi0, (dt/2.0), dx, Nx);
+		        h = psi0;
+			psi0 = psi1;
+			psi1 = h;
 		}
 		strm.str("");
-		strm << "psi_" << i;
+		strm << "psistrang_" << i;
 		writeToFile(psi0,strm.str(), dx,Nx,xmin);
 	}
 
